@@ -1,7 +1,8 @@
 package ques2;
 
 import java.text.NumberFormat;
-import java.util.*;
+import java.util.Locale;
+import java.util.Scanner;
 
 public class Sip {
 
@@ -36,35 +37,54 @@ public class Sip {
         // SIP Returns Calculation
         double monthlySIPRate = sipRateOfReturn / 12 / 100;
         double sipValue = 0;
-        for (int i = 0; i < numberOfPayments; i++) {
-            sipValue += emi * Math.pow(1 + monthlySIPRate, numberOfPayments - i);
-        }
-
-        // Depreciation and Appreciation Calculation
-        double depreciatedValue = principal;
-        double appreciatedValue = principal;
-        for (int i = 0; i < tenure; i++) {
-            depreciatedValue -= depreciatedValue * (depreciationRate / 100);
-            appreciatedValue += appreciatedValue * (appreciationRate / 100);
-        }
-
-        // Summary
-        double totalEMIPaid = emi * numberOfPayments;
 
         // Number formatting for output
-        NumberFormat formatter = NumberFormat.getInstance(new Locale( "en"));
+        NumberFormat formatter = NumberFormat.getInstance(new Locale("en", "IN"));
+        formatter.setMaximumFractionDigits(0);  // Set to 0 for integer values
+        formatter.setMinimumFractionDigits(0);
 
+        //Final answer variables
+        double depreciatedValue = principal;
+        double appreciatedValue = principal;
+        double lastSipValue = 0;
+        double lastDepreciatedValue = principal;
+        double lastAppreciatedValue = principal;
 
         System.out.println("-----------------------------");
-        System.out.println("\nSummary of the Calculation:");
-        System.out.printf("Total amount paid over %d years: ₹%s%n", tenure, formatter.format(totalEMIPaid));
-        System.out.printf("Future value of SIP after %d years: ₹%s%n", tenure, formatter.format(sipValue));
-        System.out.printf("Depreciated value of the asset after %d years: ₹%s%n", tenure, formatter.format(depreciatedValue));
-        System.out.printf("Appreciated value of the asset after %d years: ₹%s%n", tenure, formatter.format(appreciatedValue));
+        System.out.println("\nYearly Breakdown:");
 
-        if (depreciatedValue > sipValue) {
+
+        // Table header
+        System.out.printf("%-6s %-20s %-25s %-25s %-20s%n", "Year", "Total EMI Paid (₹)", "Future Value of SIP (₹)", "Depreciated Value (₹)", "Appreciated Value (₹)");
+
+        for (int year = 1; year <= tenure; year++) {
+            // EMI paid until this year
+            double totalEMIPaid = emi * year * 12;
+
+            // Future value of SIP until this year
+            sipValue = 0;
+            for (int i = 0; i < year * 12; i++) {
+                sipValue += emi * Math.pow(1 + monthlySIPRate, (year * 12) - i);
+            }
+
+            // Depreciated and appreciated values for this year
+            depreciatedValue -= depreciatedValue * (depreciationRate / 100);
+            appreciatedValue += appreciatedValue * (appreciationRate / 100);
+
+            // Print row for this year with integer values
+            System.out.printf("%-6d %-20s %-25s %-25s %-20s%n", year, formatter.format(totalEMIPaid), formatter.format(sipValue), formatter.format(depreciatedValue), formatter.format(appreciatedValue));
+
+            // Store the last year's values for the final comparison
+            lastSipValue = sipValue;
+            lastDepreciatedValue = depreciatedValue;
+            lastAppreciatedValue = appreciatedValue;
+        }
+
+        // Summary to determine which investment is better
+        System.out.println("\nSummary of the Calculation:");
+        if (lastDepreciatedValue > lastSipValue) {
             System.out.println("Purchasing the asset through a home loan is a better option.");
-        } else if (appreciatedValue > sipValue) {
+        } else if (lastAppreciatedValue > lastSipValue) {
             System.out.println("Purchasing the asset through a home loan is a better option due to appreciation.");
         } else {
             System.out.println("Investing through SIP is a better option.");
@@ -74,7 +94,7 @@ public class Sip {
     }
 
     // Method to parse input and handle commas using regular expressions
-    //input like 1,00,00 will be converted to 100000 for calculations
+    // Input like 1,00,00 will be converted to 100000 for calculations
     public static double handlecomma(String input) {
         // Remove commas from the input string
         input = input.replaceAll(",", "");
