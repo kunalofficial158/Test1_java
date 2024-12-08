@@ -1,0 +1,30 @@
+<><<>>.>><<
+Not aligned
+Not aligned
+Not aligned
+Not aligned
+Not aligned
+Not aligned
+Not aligned
+Not aligned
+Not aligned
+Not aligned
+Not aligned
+Not aligned
+Not aligned
+Not aligned
+<><<>>.>><<
+Not aligned
+Not aligned
+Not aligned
+Not aligned
+Not aligned
+Not aligned
+Not aligned
+Not aligned
+Not aligned
+Not aligned
+Not aligned
+Not aligned
+Not aligned
+Not aligned
