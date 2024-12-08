@@ -1,0 +1,20 @@
+Flow
+1. User enters their budget:
+2. Program displays available cars within the budget.
+3. User selects a car and variant.
+4. Program displays the variants and prompts the user to select a variant.
+5. Program reads accessories data and enters the accessory selection loop.
+6. User selects accessory categories and individual accessories.
+7. Program checks if adding accessories exceeds the budget and prompts the user accordingly.
+8. User can finish adding accessories by entering 0.
+9. Program displays the final on-road price and selected accessories.
+
+
+Files
+1. Car.java - For class of car   (never used)
+2. Accessories.java - For class of Accessories   (never used)
+3. JsonCar.java - To extract from Json to Map about car
+4. JsonAccessories.java - To extract from Json to Map about accessories
+5. cars.json - Json file of car
+6. accessories.json - Json file of accessories
+7. Main.java - Main file
